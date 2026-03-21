@@ -24,4 +24,4 @@ Zhu, H. et al. The microdosimetric extension in TOPAS: development and compariso
 
 Schuemann, J. et al. TOPAS-nBio: An Extension to the TOPAS Simulation Toolkit for Cellular and Sub-cellular Radiobiology. Radiat Res 191, 125–138 (2019).
 
-Zwaniga, A. V., Da Silva, E., and Grafe, J. Microdosimetry, DNA strand breaks, and radiolysis of the 119Sb Auger electron cascade in targeted radionuclide therapy: a comparative Monte Carlo study. (2026). 
+Zwaniga, A. V., Da Silva, E., and Grafe, J. Microdosimetry, DNA strand breaks, and radiolysis of the <sup>119</sup>Sb Auger electron cascade in targeted radionuclide therapy: a comparative Monte Carlo study. (2026). 
