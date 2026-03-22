@@ -9,33 +9,33 @@ results/microdosimetry/*/*/*/1e5
 results/microdosimetry/*/*/*/1e7
 
 ### Ignore Microdosimetry.header, Microdosimetry.phsp, results.txt, simulation_parameters.csv, ydy.txt, ySpecfile_Particle.txt
-results/microdosimetry/*/*/*/1e6/*/Microdosimetry.header
-results/microdosimetry/*/*/*/1e6/*/Microdosimetry.phsp
-results/microdosimetry/*/*/*/1e6/*/results.txt
-results/microdosimetry/*/*/*/1e6/*/simulation_parameters.csv
-results/microdosimetry/*/*/*/1e6/*/ydy.txt
-results/microdosimetry/*/*/*/1e6/*/ySpecfile_Particle.txt
+results/microdosimetry/*/*/*/*/1e6/*/Microdosimetry.header
+results/microdosimetry/*/*/*/*/1e6/*/Microdosimetry.phsp
+results/microdosimetry/*/*/*/*/1e6/*/results.txt
+results/microdosimetry/*/*/*/*/1e6/*/simulation_parameters.csv
+results/microdosimetry/*/*/*/*/1e6/*/ydy.txt
+results/microdosimetry/*/*/*/*/1e6/*/ySpecfile_Particle.txt
 
 ## dna-damage ignores
 ### Ignore all histories except for 1e6
-results/dna-damage/*/*/*/1e3
-results/dna-damage/*/*/*/1e4
-results/dna-damage/*/*/*/1e5
-results/dna-damage/*/*/*/1e7
+results/dna-damage/*/*/*/*/1e3
+results/dna-damage/*/*/*/*/1e4
+results/dna-damage/*/*/*/*/1e5
+results/dna-damage/*/*/*/*/1e7
 
 ### Ignore results.txt and simulation_parameters.csv
-results/dna-damage/*/*/*/1e6/*/results.txt
-results/dna-damage/*/*/*/1e6/*/simulation_parameters.csv
+results/dna-damage/*/*/*/*/1e6/*/results.txt
+results/dna-damage/*/*/*/*/1e6/*/simulation_parameters.csv
 
 ## radiolysis ignores
 ### Ignore all histories except for 1e4
-results/radiolysis/*/*/*/1e3
-results/radiolysis/*/*/*/1e5
-results/radiolysis/*/*/*/1e6
+results/radiolysis/*/*/*/*/1e3
+results/radiolysis/*/*/*/*/1e5
+results/radiolysis/*/*/*/*/1e6
 
 ### Ignore test.txt
-results/radiolysis/*/*/*/1e4/test.txt
+results/radiolysis/*/*/*/*/1e4/test.txt
 
 ### Ignore results.txt and simulation_parameters.csv
-results/radiolysis/*/*/*/1e4/*/results.txt
-results/radiolysis/*/*/*/1e4/*/simulation_parameters.csv
+results/radiolysis/*/*/*/*/1e4/*/results.txt
+results/radiolysis/*/*/*/*/1e4/*/simulation_parameters.csv
