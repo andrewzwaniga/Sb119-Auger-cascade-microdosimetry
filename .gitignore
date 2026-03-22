@@ -8,6 +8,9 @@ results/microdosimetry/*/*/*/*/1e4
 results/microdosimetry/*/*/*/*/1e5
 results/microdosimetry/*/*/*/*/1e7
 
+### Ignore test.txt
+results/microdosimetry/*/*/*/*/1e6/test.txt
+
 ### Ignore Microdosimetry.header, Microdosimetry.phsp, results.txt, simulation_parameters.csv, ydy.txt, ySpecfile_Particle.txt
 results/microdosimetry/*/*/*/*/1e6/*/Microdosimetry.header
 results/microdosimetry/*/*/*/*/1e6/*/Microdosimetry.phsp
