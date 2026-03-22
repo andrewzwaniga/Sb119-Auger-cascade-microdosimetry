@@ -3,10 +3,10 @@
 
 ## microdosimetry ignores
 ### Ignore all histories except for 1e6 
-results/microdosimetry/*/*/*/1e3
-results/microdosimetry/*/*/*/1e4
-results/microdosimetry/*/*/*/1e5
-results/microdosimetry/*/*/*/1e7
+results/microdosimetry/*/*/*/*/1e3
+results/microdosimetry/*/*/*/*/1e4
+results/microdosimetry/*/*/*/*/1e5
+results/microdosimetry/*/*/*/*/1e7
 
 ### Ignore Microdosimetry.header, Microdosimetry.phsp, results.txt, simulation_parameters.csv, ydy.txt, ySpecfile_Particle.txt
 results/microdosimetry/*/*/*/*/1e6/*/Microdosimetry.header
