@@ -31,8 +31,10 @@ As an example, to run the radiolysis simulation for <sup>119</sup>Sb with the MI
 
 ## References
 
-Zhu, H. et al. The microdosimetric extension in TOPAS: development and comparison with published data. Phys. Med. Biol. 64, 145004 (2019).
+Perl, J., Shin, J., Schuemann, J., Faddegon, B. & Paganetti, H. TOPAS: an innovative proton Monte Carlo platform for research and clinical applications. Med. Phys. 39, 6818–6837 (2012).
 
-Schuemann, J. et al. TOPAS-nBio: An Extension to the TOPAS Simulation Toolkit for Cellular and Sub-cellular Radiobiology. Radiat Res 191, 125–138 (2019).
+Schuemann, J. et al. TOPAS-nBio: An Extension to the TOPAS Simulation Toolkit for Cellular and Sub-cellular Radiobiology. Radiat. Res. 191, 125–138 (2019).
+
+Zhu, H. et al. The microdosimetric extension in TOPAS: development and comparison with published data. Phys. Med. Biol. 64, 145004 (2019).
 
 Zwaniga, A. V., Da Silva, E., and Grafe, J. Microdosimetry, DNA strand breaks, and radiolysis of the <sup>119</sup>Sb Auger electron cascade in targeted radionuclide therapy: a comparative Monte Carlo study. (2026). Submitted to Phys. Med. Biol. March 2026. 
