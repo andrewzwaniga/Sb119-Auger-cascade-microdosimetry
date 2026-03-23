@@ -1,0 +1,140 @@
+# Andrew Vincent Zwaniga PhD Thesis Work
+
+# Title: Microdosimetric modeling of Pd103 for radiopharmaceutical therapy
+# Purpose: Measure the lineal energy distribution and RBE for Pd103 using g4em-dna_opt2 and 1000000 histories 
+# and random seed 501152501
+
+# Description: Simulation of a simple cylindrical DNA model using G4_WATER with a custom Pd103 source 
+
+# Reference data for Auger electron spectrum: 
+# [1] Eckerman, K. F. & Endo, A. MIRD Radionuclide Data and Decay Schemes. https://www.osti.gov/biblio/1042721 (2007).
+
+# [2] Endo, A., Yamaguchi, Y. & Eckerman, K. F. Nuclear Decay Data for Dosimetry Calculation; Revised data of ICRP Publication 38. (2005) doi:10.11484/jaeri-1347.
+
+
+# ----------- GEOMETRY ----------- #
+
+# World definition
+
+d:Ge/World/HLX = 1. cm
+d:Ge/World/HLY = 1. cm
+d:Ge/World/HLZ = 1. cm
+b:Ge/World/Invisible = "True"
+s:Ge/World/Material = "G4_WATER"
+
+# DNA Target definition
+
+s:Ge/DNA/Type = "TsCylindericalDNA"
+s:Ge/DNA/Parent = "World"
+s:Ge/DNA/Material = "G4_WATER"
+s:Ge/DNA/DrawingStyle = "FullWireFrame"
+s:Ge/DNA/Color = "yellow"
+d:Ge/DNA/DNAHalfLength = 1. nm
+d:Ge/DNA/DNARadius = 1. nm
+
+## Beamposition object is used to define the origin point of the source
+s:Ge/Beamposition/Parent = "World"
+s:Ge/Beamposition/Type = "Group"
+## The source is moved along an axis perpendicular to the symmetry axis of the cylinder
+d:Ge/Beamposition/TransY = 0. m
+d:Ge/Beamposition/TransZ = 0. m
+d:Ge/Beamposition/RotX = 0. deg
+d:Ge/Beamposition/RotY = 0. deg
+d:Ge/Beamposition/RotZ = 0. deg
+
+# ----------- SOURCE ----------- #
+
+s:So/Pd103AveragedElectrons/BeamEnergySpectrumType = "Discrete"
+dv:So/Pd103AveragedElectrons/BeamEnergySpectrumValues = 59 33.519000000000005 110.633 118.12100000000001 260.38100000000003 307.925 2266.7999999999997 2608.05 2972.4500000000003 16909.4 19595.2 22283.7 30099.0 39219.0 49898.8 50138.5 50285.5 52795.3 53290.0 59018.8 59258.5 59405.5 61915.3 62410.0 218689.0 238489.0 238729.0 238876.0 241385.0 241880.0 271789.0 291589.0 291829.0 291976.0 294485.0 294529.0 294980.0 314329.0 314569.0 314716.0 317225.0 317720.0 334259.0 354059.0 354299.0 354446.0 356955.0 357450.0 420599.0 440399.0 440639.0 440786.0 443295.0 443790.0 473889.0 493689.0 493928.0 494076.0 496585.0 497080.0 eV
+uv:So/Pd103AveragedElectrons/BeamEnergySpectrumWeights = 59 0.4488393176996559 0.025843559435511004 0.10952758783182695 0.26825105097066276 0.0017510236768906778 0.10349121647157185 0.019194864932417184 0.0009759051354590706 0.015487983789483321 0.006063410926356299 0.0005715607616391228 6.746163331869358e-08 1.6213924204104816e-06 7.668345649647004e-09 5.319964039798574e-10 1.5751253160075817e-10 1.5689940170806063e-09 3.059020668814444e-10 1.844176393921567e-07 1.24226973634321e-08 3.691203304010938e-09 3.7693639194988944e-08 7.3392454905754044e-09 6.671915453196645e-12 6.995596942383219e-13 3.3358703286969507e-14 4.8278466259229193e-14 1.4537497997492336e-13 2.8102324581876343e-14 6.292178294653578e-08 7.084662126796125e-09 2.9518708417331573e-10 9.461777477449262e-11 1.3973042012943156e-09 1.0027120886843135e-10 2.735513975430612e-10 1.0601486448824731e-11 4.199643956696567e-13 6.081051856602333e-13 2.1682074747136273e-12 4.2092577258474165e-13 4.0698647960755885e-07 4.288749478602414e-08 5.983367894531113e-09 5.379717312674624e-09 1.020921777580811e-08 1.935487032108167e-09 1.417257814468946e-10 1.5114189688233506e-11 1.6480151657512955e-12 1.4061918955722338e-12 3.415967143846057e-12 6.52251882517554e-13 2.4479076507639383e-08 2.7427478324979646e-09 8.8611656533943e-11 3.097516082910783e-11 5.359454445387448e-10 1.0499136783403379e-10 
+s:So/Pd103AveragedElectrons/BeamParticle = "e-"
+s:So/Pd103AveragedElectrons/Type = "Isotropic"
+s:So/Pd103AveragedElectrons/Component = "Beamposition"
+
+s:So/Pd103AveragedPhotons/BeamEnergySpectrumType = "Discrete"
+dv:So/Pd103AveragedPhotons/BeamEnergySpectrumValues = 48 9.95806 39.9264 147.0 239.7 306.604 386.70000000000005 2388.55 2484.3500000000004 2509.84 2535.56 2656.85 2681.4700000000003 2686.54 2828.46 2871.05 2896.5499999999997 2915.98 2945.6600000000003 2949.72 2994.2599999999998 2994.69 3062.96 3068.1699999999996 3073.2400000000002 3096.71 3141.2599999999998 3332.35 3336.43 3380.96 3381.3900000000003 20039.5 20186.5 22670.800000000003 22696.3 22868.0 22873.100000000002 23132.1 23136.2 23180.699999999997 23181.2 53290.0 62410.0 241880.0 294980.0 317720.0 357450.0 443790.0 497080.0 eV
+uv:So/Pd103AveragedPhotons/BeamEnergySpectrumWeights = 48 0.9190083754479034 2.6331994319961885e-06 3.164503395586152e-10 3.0146473143390587e-07 0.00014522685937400022 2.221307608158506e-06 0.0004058237308835643 1.852353178729607e-06 1.7498894371762268e-06 0.00010334318478640043 1.1497571135484394e-06 0.0003081384355318921 0.002735532466108446 0.0012758244405112144 5.924728675780015e-05 9.994468239434449e-05 2.3953009968662447e-05 7.816969408625544e-08 7.453090784826906e-08 2.070710851411718e-05 0.0001826483997674087 9.846953999840802e-06 5.949345243858109e-07 8.872105227087961e-07 6.401603882429164e-08 8.691881450353376e-05 1.0129608841268487e-05 1.7255233916936168e-05 3.509941377899738e-08 5.2298007804780404e-08 0.02178838582080412 0.04124680258072979 0.0035076866745403727 0.006820597477234508 2.0930182546966463e-05 2.9378566926795147e-05 0.0006976172009030717 0.0013473431953788125 1.7004384552848325e-06 2.3594435888516035e-06 2.9757727428918367e-08 1.130793642298898e-06 5.207602300060715e-10 3.050167061464133e-06 1.6366750085905102e-08 2.4029364898851583e-05 1.6366750085905102e-08 4.314870477193163e-06 
+s:So/Pd103AveragedPhotons/BeamParticle = "gamma"
+s:So/Pd103AveragedPhotons/Type = "Isotropic"
+s:So/Pd103AveragedPhotons/Component = "Beamposition"
+
+
+# ----------- SCORING ----------- #
+# Microdosimetry scoring (lineal energy and RBE)
+
+s:Sc/Microdosimetry/Quantity = "TsYScorer"
+s:Sc/Microdosimetry/Component = "DNA"
+
+# Mandatory parameters (for lineal energy scoring)
+i:Sc/Microdosimetry/GeometryNumber = 1
+d:Sc/Microdosimetry/SensitiveVolumeRadius = 1 nm
+d:Sc/Microdosimetry/TissueEquivalentRadius = 0.97 nm
+d:Sc/Microdosimetry/TransX = 0 mm
+d:Sc/Microdosimetry/TransY = 0 mm
+d:Sc/Microdosimetry/TransZ = 0 mm
+s:Sc/Microdosimetry/OutputType = "ASCII"
+s:Sc/Microdosimetry/IfOutputFileAlreadyExists = "Overwrite"
+
+# Optional parameters
+u:Sc/Microdosimetry/LinealEnergyLowerLimit = 0 # keV/micron
+u:Sc/Microdosimetry/LinealEnergyUpperLimit = 10000 # keV/micron
+b:Sc/Microdosimetry/IncludeFrequencyMeanLinealEnergy = "True"
+b:Sc/Microdosimetry/IncludeDoseMeanLinealEnergy = "True"
+b:Sc/Microdosimetry/GetRBEWithBiologicalWeightFunction = "True"
+b:Sc/Microdosimetry/GetRBEWithMKModel = "True"
+
+# ----------- PHYSICS ----------- #
+
+sv:Ph/Default/Modules = 1 "g4em-dna_opt2"
+
+d:Ph/Default/EMRangeMin = 10 eV
+d:Ph/Default/SetProductionCutLowerEdge = 10 eV
+d:Ph/Default/MaxStepSize = 0.1 nm
+b:Ph/Default/Fluorescence = "True"
+b:Ph/Default/Auger = "True"
+b:Ph/Default/AugerCascade = "True"
+b:Ph/Default/DeexcitationIgnoreCut = "True"
+d:Ph/Default/DefaultRegionForTheWorld/CutForAllParticles = 0.01 nm
+
+# ----------- KEY ADJUSTABLES ----------- #
+## Radial position of source relative to DNA molecule axis of symmetry 
+d:Ge/Beamposition/TransX = 0. nm
+
+i:Ts/ShowHistoryCountAtInterval = 1000
+i:Ts/NumberOfThreads = 32
+b:Ts/ShowCPUTime = "True"
+
+# Exit if more than 0.1 percent of the total number of histories to be simulated are interrupted
+i:Ts/MaxInterruptedHistories = 1000
+# Stop printing out a report of interrupted histories after this many reports
+i:Ts/InterruptedHistoryMaxReports = 10
+# Limit the number of reports made about killed tracks
+i:Ts/KilledTrackMaxReports = 10
+# Exit if more than 0.1 percent of the total number of histories to be simulated have killed tracks
+i:Ts/KilledTrackMaxCount = 1000
+
+i:So/Pd103AveragedElectrons/NumberOfHistoriesInRun = 1000000
+i:So/Pd103AveragedPhotons/NumberOfHistoriesInRun = 1000000
+
+
+i:Sc/Microdosimetry/NumberOfHistoriesInRun = 1000000
+i:Ts/seed = 501152501
+
+# ------------ GRAPHICS ------------ #
+# b:Ts/PauseBeforeQuit = "True"
+# s:Gr/MyGraphic1/Type = "OpenGL" # OpenGL, HepRep, VRML, DAWN, RayTracer, RayTracerX
+# u:Gr/MyGraphic1/Zoom = 2. # increase to zoom in, decrease to zoom out
+# d:Gr/MyGraphic1/Theta = 90. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# d:Gr/MyGraphic1/Phi = 0. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# u:Gr/MyGraphic1/TransX = 0. # move left or right in the view window
+# u:Gr/MyGraphic1/TransY = 0. # move up or down in the view window
+# s:Gr/MyGraphic1/Projection = "Perspective" # Defaults to "Orthogonal"
+# d:Gr/MyGraphic1/PerspectiveAngle = 10. deg # Increase for stronger perspective effect
+# i:Gr/MyGraphic1/WindowSizeX = 600
+# i:Gr/MyGraphic1/WindowSizeY = 600
+# i:Gr/MyGraphic1/WindowPosX = 0
+# i:Gr/MyGraphic1/WindowPosY = 0
+# # Remove hidden lines from wireframe geometries, like Geant4’s /vis/viewer/set/hiddenEdge
+# b:Gr/MyGraphic1/HiddenLineRemovalForGeometry = "False"
+# # Remove hidden trajectories lines from within geometries, like Geant4’s /vis/viewer/set/hiddenMarker
+# b:Gr/MyGraphic1/HiddenLineRemovalForTrajectories = "False"

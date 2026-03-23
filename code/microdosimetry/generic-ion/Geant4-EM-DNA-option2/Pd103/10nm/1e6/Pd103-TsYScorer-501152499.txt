@@ -1,0 +1,130 @@
+# Andrew Vincent Zwaniga PhD Thesis Work
+
+# Title: Microdosimetric modeling of Pd103 for radiopharmaceutical therapy
+# Purpose: Measure the lineal energy distribution and RBE for Pd103 using g4em-dna_opt2 and 1000000 histories 
+# and random seed 501152499
+
+# Description: Simulation of a simple cylindrical DNA model using G4_WATER with a custom Pd103 source 
+
+# Reference data for Auger electron spectrum: 
+# [1] Guatelli, S., Mantero, A., Mascialino, B., Nieminen, P. & Pia, M. G. Geant4 Atomic Relaxation. IEEE Transactions on Nuclear Science 54, 585–593 (2007).
+
+# [2] Guatelli, S., Mantero, A., Mascialino, B., Pia, M. G. & Zampichelli, V. Validation of Geant4 Atomic Relaxation Against the NIST Physical Reference Data. IEEE Transactions on Nuclear Science 54, 594–603 (2007).
+
+
+# ----------- GEOMETRY ----------- #
+
+# World definition
+
+d:Ge/World/HLX = 1. cm
+d:Ge/World/HLY = 1. cm
+d:Ge/World/HLZ = 1. cm
+b:Ge/World/Invisible = "True"
+s:Ge/World/Material = "G4_WATER"
+
+# DNA Target definition
+
+s:Ge/DNA/Type = "TsCylindericalDNA"
+s:Ge/DNA/Parent = "World"
+s:Ge/DNA/Material = "G4_WATER"
+s:Ge/DNA/DrawingStyle = "FullWireFrame"
+s:Ge/DNA/Color = "yellow"
+d:Ge/DNA/DNAHalfLength = 1. nm
+d:Ge/DNA/DNARadius = 1. nm
+
+## Beamposition object is used to define the origin point of the source
+s:Ge/Beamposition/Parent = "World"
+s:Ge/Beamposition/Type = "Group"
+## The source is moved along an axis perpendicular to the symmetry axis of the cylinder
+d:Ge/Beamposition/TransY = 0. m
+d:Ge/Beamposition/TransZ = 0. m
+d:Ge/Beamposition/RotX = 0. deg
+d:Ge/Beamposition/RotY = 0. deg
+d:Ge/Beamposition/RotZ = 0. deg
+
+# ----------- SOURCE ----------- #
+
+s:So/Pd103/BeamParticle = "GenericIon(46,103,0)"
+d:So/Pd103/BeamEnergy = 0. eV
+s:So/Pd103/Type = "Isotropic"
+s:So/Pd103/Component = "Beamposition"
+
+
+# ----------- SCORING ----------- #
+# Microdosimetry scoring (lineal energy and RBE)
+
+s:Sc/Microdosimetry/Quantity = "TsYScorer"
+s:Sc/Microdosimetry/Component = "DNA"
+
+# Mandatory parameters (for lineal energy scoring)
+i:Sc/Microdosimetry/GeometryNumber = 1
+d:Sc/Microdosimetry/SensitiveVolumeRadius = 1 nm
+d:Sc/Microdosimetry/TissueEquivalentRadius = 0.97 nm
+d:Sc/Microdosimetry/TransX = 0 mm
+d:Sc/Microdosimetry/TransY = 0 mm
+d:Sc/Microdosimetry/TransZ = 0 mm
+s:Sc/Microdosimetry/OutputType = "ASCII"
+s:Sc/Microdosimetry/IfOutputFileAlreadyExists = "Overwrite"
+
+# Optional parameters
+u:Sc/Microdosimetry/LinealEnergyLowerLimit = 0 # keV/micron
+u:Sc/Microdosimetry/LinealEnergyUpperLimit = 10000 # keV/micron
+b:Sc/Microdosimetry/IncludeFrequencyMeanLinealEnergy = "True"
+b:Sc/Microdosimetry/IncludeDoseMeanLinealEnergy = "True"
+b:Sc/Microdosimetry/GetRBEWithBiologicalWeightFunction = "True"
+b:Sc/Microdosimetry/GetRBEWithMKModel = "True"
+
+# ----------- PHYSICS ----------- #
+
+sv:Ph/Default/Modules = 2 "g4em-dna_opt2" "g4radioactivedecay"
+
+d:Ph/Default/EMRangeMin = 10 eV
+d:Ph/Default/SetProductionCutLowerEdge = 10 eV
+d:Ph/Default/MaxStepSize = 0.1 nm
+b:Ph/Default/Fluorescence = "True"
+b:Ph/Default/Auger = "True"
+b:Ph/Default/AugerCascade = "True"
+b:Ph/Default/DeexcitationIgnoreCut = "True"
+d:Ph/Default/DefaultRegionForTheWorld/CutForAllParticles = 0.01 nm
+
+# ----------- KEY ADJUSTABLES ----------- #
+## Radial position of source relative to DNA molecule axis of symmetry 
+d:Ge/Beamposition/TransX = 10. nm
+
+i:Ts/ShowHistoryCountAtInterval = 1000
+i:Ts/NumberOfThreads = 32
+b:Ts/ShowCPUTime = "True"
+
+# Exit if more than 0.1 percent of the total number of histories to be simulated are interrupted
+i:Ts/MaxInterruptedHistories = 1000
+# Stop printing out a report of interrupted histories after this many reports
+i:Ts/InterruptedHistoryMaxReports = 10
+# Limit the number of reports made about killed tracks
+i:Ts/KilledTrackMaxReports = 10
+# Exit if more than 0.1 percent of the total number of histories to be simulated have killed tracks
+i:Ts/KilledTrackMaxCount = 1000
+
+i:So/Pd103/NumberOfHistoriesInRun = 1000000
+
+
+i:Sc/Microdosimetry/NumberOfHistoriesInRun = 1000000
+i:Ts/seed = 501152499
+
+# ------------ GRAPHICS ------------ #
+# b:Ts/PauseBeforeQuit = "True"
+# s:Gr/MyGraphic1/Type = "OpenGL" # OpenGL, HepRep, VRML, DAWN, RayTracer, RayTracerX
+# u:Gr/MyGraphic1/Zoom = 2. # increase to zoom in, decrease to zoom out
+# d:Gr/MyGraphic1/Theta = 90. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# d:Gr/MyGraphic1/Phi = 0. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# u:Gr/MyGraphic1/TransX = 0. # move left or right in the view window
+# u:Gr/MyGraphic1/TransY = 0. # move up or down in the view window
+# s:Gr/MyGraphic1/Projection = "Perspective" # Defaults to "Orthogonal"
+# d:Gr/MyGraphic1/PerspectiveAngle = 10. deg # Increase for stronger perspective effect
+# i:Gr/MyGraphic1/WindowSizeX = 600
+# i:Gr/MyGraphic1/WindowSizeY = 600
+# i:Gr/MyGraphic1/WindowPosX = 0
+# i:Gr/MyGraphic1/WindowPosY = 0
+# # Remove hidden lines from wireframe geometries, like Geant4’s /vis/viewer/set/hiddenEdge
+# b:Gr/MyGraphic1/HiddenLineRemovalForGeometry = "False"
+# # Remove hidden trajectories lines from within geometries, like Geant4’s /vis/viewer/set/hiddenMarker
+# b:Gr/MyGraphic1/HiddenLineRemovalForTrajectories = "False"
