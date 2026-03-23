@@ -29,7 +29,25 @@ The yield of free radicals is scored as G-values (molecules produced per 100 eV 
 
 As an example, to run the radiolysis simulation for <sup>119</sup>Sb with the MIRD cascaded spectrum at a distance of 5 nm from the DNA volume with 1e4 histories and a random seed of 501152494, run the file `code/radiolysis/mird-07/Geant4-EM-DNA-option2/Sb119/5nm/1e6/Sb119-SBSGValue-501152494.txt`. The corresponding radiolysis results in the manuscript are included in this repository at `results/radiolysis/mird-07/Geant4-EM-DNA-option2/Sb119/5nm/1e4/results_501152494/` in the `Sb119-SBSGValue.header` and `Sb119-SBSGValue.phsp` files. 
 
+## Auger Electron Spectra
+
+Three Auger electron spectra are used in these simulations. They are called MIRD averaged (`avg-mird-07`), MIRD cascaded (`mird-07`), and Geant4 Atomic Relaxation (`generic-ion`). The Medical Internal Radiation Dose (MIRD) Committee of the Society of Nuclear Medicine and Molecular Imaging (SNMMI) produced a monograph along with the RADTABS07 CD that contains radionuclide spectrum data for over 300 radionuclides, including an "abridged" (averaged) Auger electron spectrum and a cascaded Auger electron spectrum. Full documentation is available in Endo et al. (2005), Eckerman and Endo (2007a), and Eckerman and Endo (2007b). Geant4 Atomic Relaxation is available in TOPAS through the `g4radioactivedecay` and simulates full Auger cascade on a per-decay basis. Further details are available in the works by Hauf et al. (2013a), Hauf et al. (2013b), Guatelli, Mantero, Mascialino, Nieminen, et al. (2007), and Guatelli, Mantero, Mascialino, Pia, et al. (2007).  
+
 ## References
+
+Eckerman, K. F. & Endo, A. MIRD Radionuclide Data and Decay Schemes. https://www.osti.gov/biblio/1042721 (2007a).
+
+Eckerman, K. F. & Endo, A. USER GUIDE TO MIRD CD AND RADTABS SOFTWARE. (2007b).
+
+Endo, A., Yamaguchi, Y. & Eckerman, K. F. Nuclear Decay Data for Dosimetry Calculation; Revised data of ICRP Publication 38. (2005) doi:10.11484/jaeri-1347.
+
+Guatelli, S., Mantero, A., Mascialino, B., Nieminen, P. & Pia, M. G. Geant4 Atomic Relaxation. IEEE Transactions on Nuclear Science 54, 585–593 (2007).
+
+Guatelli, S., Mantero, A., Mascialino, B., Pia, M. G. & Zampichelli, V. Validation of Geant4 Atomic Relaxation Against the NIST Physical Reference Data. IEEE Transactions on Nuclear Science 54, 594–603 (2007).
+
+Hauf, S. et al. Radioactive Decays in Geant4. IEEE Transactions on Nuclear Science 60, 2966–2983 (2013).
+
+Hauf, S. et al. Validation of Geant4-Based Radioactive Decay Simulation. IEEE Transactions on Nuclear Science 60, 2984–2997 (2013).
 
 Perl, J., Shin, J., Schuemann, J., Faddegon, B. & Paganetti, H. TOPAS: an innovative proton Monte Carlo platform for research and clinical applications. Med. Phys. 39, 6818–6837 (2012).
 
