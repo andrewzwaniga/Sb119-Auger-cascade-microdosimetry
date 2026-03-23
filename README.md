@@ -2,7 +2,7 @@
 
 This repository consists of parameter control files designed for the Monte Carlo simulation code called the TOol for PArticle Simulations (TOPAS) developed by Perl et al. (2012). They are intended for use in performing microdosimetry simulations with Auger electron-emitting radionuclides, including <sup>103m</sup>Rh, <sup>103</sup>Pd, <sup>111</sup>In, <sup>119</sup>Sb, <sup>123</sup>I, <sup>125</sup>I, <sup>165</sup>Er, and <sup>Hg</sup>197. The parameter control files make use of the microdosimetry extension (Zhu et al. 2019) and the nBio extension (Schuemann et al. 2019). The files are compatible with TOPAS version 3.9 or better by Perl et al. (2012) which is open source and available at https://www.topasmc.org/. 
 
-The corresponding scorer output files are also included and supporting the manuscript by Zwaniga et al. (2026) that was submitted to _Physics in Medicine and Biology_ in March 2026 and is currently under review.
+The corresponding scorer output files are also included and support the manuscript by Zwaniga et al. (2026) that was submitted to _Physics in Medicine and Biology_ in March 2026 and is currently under review.
 
 Overall, the repository contains parameter control files for simulating eight radionuclides with three Auger electron spectra at four positions relative to a DNA volume. 
 
