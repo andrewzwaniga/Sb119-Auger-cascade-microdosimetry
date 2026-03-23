@@ -1,0 +1,165 @@
+# Andrew Zwaniga PhD Thesis Work
+
+# Title: DNA SSB and DSB damage due to Er165 source in a DNA target
+# Purpose: Calculate DNA damage in the form of SSBs and DSBs due to a custom
+# Er165 source using G4_WATER with the TsCharltonDNA model 
+
+# Description: Simulation of Er165 decays in proximity to the TsCharltonDNA model in G4_WATER with g4em-dna_opt2
+# and avg-mird-07 model Auger electron spectrum and 1000000 histories and seed 501152494. The Er165 source is placed at varying 
+# distances along an axis perpendicular to the DNA helix symmetry axis. 
+
+# Reference data for Auger electron spectrum: 
+# [1] Eckerman, K. F. & Endo, A. MIRD Radionuclide Data and Decay Schemes. https://www.osti.gov/biblio/1042721 (2007).
+
+# [2] Endo, A., Yamaguchi, Y. & Eckerman, K. F. Nuclear Decay Data for Dosimetry Calculation; Revised data of ICRP Publication 38. (2005) doi:10.11484/jaeri-1347.
+
+
+# ----------- GEOMETRY ----------- #
+
+## World
+d:Ge/World/HLX = 1. um
+d:Ge/World/HLY = 1. um
+d:Ge/World/HLZ = 1. um
+b:Ge/World/Invisible = "False"
+s:Ge/World/Material = "G4_WATER"
+
+## DNA Target
+s:Ge/DNA/Type = "TsCharltonDNA"
+s:Ge/DNA/Parent = "World"
+s:Ge/DNA/Material = "G4_WATER"
+i:Ge/DNA/NumberOfBasePairs = 10
+
+## Remark: In order to score strand breaks, we must modify the water material
+
+## Material for sugar backbone in strand 1
+s:Ma/G4_WATER_MODIFIED_1/CloneFromMaterial = "G4_WATER"
+d:Ma/G4_WATER_MODIFIED_1/CloneWithDensity = 1.0 g/cm3
+
+## Material for sugar backbone in strand 2
+s:Ma/G4_WATER_MODIFIED_2/CloneFromMaterial = "G4_WATER_MODIFIED_1"
+d:Ma/G4_WATER_MODIFIED_2/CloneWithDensity = 1.0 g/cm3
+
+## Modified water material is required to score strand breaks 
+s:Ge/DNA/BasePair/Material = "G4_WATER"
+s:Ge/DNA/Backbone1/Material = "G4_WATER_MODIFIED_1"
+s:Ge/DNA/Backbone2/Material = "G4_WATER_MODIFIED_2"
+
+s:Ge/DNA/BasePair/DrawingStyle = "solid"
+s:Ge/DNA/Backbone1/Color = "red"
+s:Ge/DNA/Backbone1/DrawingStyle = "solid"
+s:Ge/DNA/Backbone2/Color = "blue"
+s:Ge/DNA/Backbone2/DrawingStyle = "solid"
+
+## Beamposition object is used to define the origin point of the source
+s:Ge/Beamposition/Parent = "World"
+s:Ge/Beamposition/Type = "Group"
+## The source is moved along an axis perpendicular to the symmetry axis of the cylinder
+d:Ge/Beamposition/TransY = 0. m
+d:Ge/Beamposition/TransZ = 0. m
+d:Ge/Beamposition/RotX = 0. deg
+d:Ge/Beamposition/RotY = 0. deg
+d:Ge/Beamposition/RotZ = 0. deg
+
+# ----------- SOURCE ----------- #
+
+s:So/Er165AveragedElectrons/BeamEnergySpectrumType = "Discrete"
+dv:So/Er165AveragedElectrons/BeamEnergySpectrumValues = 15 18.9749 44.3501 134.806 178.756 222.072 708.3140000000001 1074.95 1251.93 1441.8600000000001 5308.8099999999995 6629.35 7983.88 38254.5 45424.399999999994 52600.8 eV
+uv:So/Er165AveragedElectrons/BeamEnergySpectrumWeights = 15 0.05963106176218915 0.0004615115577874305 0.5212197324138524 0.021355314973377074 0.08664970493387923 0.01930117122454598 0.18448393667148494 0.009609981084475569 0.0004884763181734179 0.06521768946452734 0.02311379068127296 0.002066528542177562 0.004093167328204778 0.0020593258432723997 0.00024860720077946833 
+s:So/Er165AveragedElectrons/BeamParticle = "e-"
+s:So/Er165AveragedElectrons/Type = "Isotropic"
+s:So/Er165AveragedElectrons/Component = "Beamposition"
+
+s:So/Er165AveragedPhotons/BeamEnergySpectrumType = "Discrete"
+dv:So/Er165AveragedPhotons/BeamEnergySpectrumValues = 53 13.6278 25.539 179.53300000000002 431.5 867.0 1298.5 1299.09 5959.2 6151.31 6333.2 6666.509999999999 6706.410000000001 6826.22 7200.21 7449.81 7533.51 7631.71 7641.34 7718.66 7759.5 7888.06 7895.48 7965.0 8004.89 8006.509999999999 8027.8099999999995 8033.099999999999 8050.88 8051.96 8508.35 8626.5 8755.07 8873.51 8900.119999999999 8917.92 9017.15 9057.99 9186.58 9193.97 9326.310000000001 9331.62 46770.2 47637.3 53788.5 53970.5 54303.8 54343.700000000004 55355.9 55396.6 55525.3 55532.7 55665.2 55670.5 eV
+uv:So/Er165AveragedPhotons/BeamEnergySpectrumWeights = 53 0.8986927648683842 2.4363759050645832e-08 4.882435116299546e-05 3.5459339841443045e-07 2.9030508766032304e-08 2.2070389834257842e-05 0.0019024569499196 0.0005777903706841713 4.14940452592509e-06 3.791219246346569e-06 0.0008644636793710154 0.0076393845282006845 0.00016933816455348588 3.869958112333334e-06 0.0005145480295275325 0.0051571153591481985 0.0007085894080072139 8.547889997540167e-05 7.261854202664856e-07 7.04335438871117e-07 0.0001448700242069277 0.0012959131984967669 1.2092379033993122e-05 1.8100989127822898e-05 1.6317341384345668e-05 1.6655502276888113e-07 1.433636123227383e-07 2.9872029048366885e-07 1.698902639698817e-06 3.540208109337543e-05 9.070119972853644e-07 0.0009084989994244461 6.292283518578312e-06 2.0230992989554702e-07 1.1552141128496421e-06 0.0001225951850575358 0.00017642487815612922 1.6436279989088752e-06 2.541393409288782e-06 1.646765907701281e-05 2.280925413135632e-05 0.023235190204552322 0.041382654888716355 0.0042863402776596735 0.00828511439835755 7.320784345450075e-05 9.530788706600641e-05 0.000946212134168641 0.0018321721062463964 1.6621211727197903e-05 2.1538994145976854e-05 0.0002093039080493426 0.0004353206849555582 
+s:So/Er165AveragedPhotons/BeamParticle = "gamma"
+s:So/Er165AveragedPhotons/Type = "Isotropic"
+s:So/Er165AveragedPhotons/Component = "Beamposition"
+
+
+# ----------- SCORING ----------- #
+
+s:Sc/SimpleSSBandDSB/Quantity = "SimpleSSBandDSB"
+s:Sc/SimpleSSBandDSB/Component = "DNA"
+
+## Pass detector properties of the Parent to the Child geometries
+b:Sc/SimpleSSBandDSB/PropagateToChildren = "True"
+## In this simplified model, the sugar backbone and base pairs are replica volumes
+i:Sc/SimpleSSBandDSB/BasePairPositionAtGeometricHierarchy = 0
+## In order that the scorer can differentiate between strand 1 and 2 (sugar1, sugar2)
+s:Sc/SimpleSSBandDSB/Strand1MaterialName = "G4_WATER_MODIFIED_1"
+s:Sc/SimpleSSBandDSB/Strand2MaterialName = "G4_WATER_MODIFIED_2"
+## Only record hits to the scorer's calculations if they occur in the sugar volumes
+sv:Sc/SimpleSSBandDSB/OnlyIncludeIfInMaterial = 2 "G4_WATER_MODIFIED_1" "G4_WATER_MODIFIED_2"
+
+s:Sc/SimpleSSBandDSB/OutputType = "ASCII"
+s:Sc/SimpleSSBandDSB/OutputFile = "Er165-SimpleSSBandDSB"
+b:Sc/SimpleSSBandDSB/OutputToConsole = "True"
+s:Sc/SimpleSSBandDSB/IfOutputFileAlreadyExists = "Overwrite"
+
+# ----------- PHYSICS ----------- #
+
+sv:Ph/Default/Modules = 1 "g4em-dna_opt2"
+
+d:Ph/Default/EMRangeMin = 10 eV
+d:Ph/Default/SetProductionCutLowerEdge = 10 eV
+d:Ph/Default/MaxStepSize = 0.1 nm
+b:Ph/Default/Fluorescence = "True"
+b:Ph/Default/Auger = "True"
+b:Ph/Default/AugerCascade = "True"
+b:Ph/Default/DeexcitationIgnoreCut = "True"
+d:Ph/Default/DefaultRegionForTheWorld/CutForAllParticles = 0.01 nm
+
+# ----------- KEY ADJUSTABLES ----------- #
+
+# Number of threads to use (change to match number of cores requested)
+i:Ts/NumberOfThreads = 8
+b:Ts/ShowCPUTime = "True"
+i:Ts/ShowHistoryCountAtInterval = 100000
+
+# Exit if more than 0.1 percent of the total number of histories to be simulated are interrupted
+i:Ts/MaxInterruptedHistories = 1000
+# Stop printing out a report of interrupted histories after this many reports
+i:Ts/InterruptedHistoryMaxReports = 10
+# Limit the number of reports made about killed tracks
+i:Ts/KilledTrackMaxReports = 10
+# Exit if more than 0.1 percent of the total number of histories to be simulated have killed tracks
+i:Ts/KilledTrackMaxCount = 1000
+
+## Modeling parameters that may need adjustment
+i:Sc/SimpleSSBandDSB/BasePairDistanceForDefiningDSB = 10
+d:Sc/SimpleSSBandDSB/EnergyThresholdForHavingSSB = 17.5 eV
+
+## Radial position of source relative to DNA molecule axis of symmetry 
+d:Ge/Beamposition/TransX = 5. nm
+
+## Number of histories to simulate
+
+i:So/Er165AveragedElectrons/NumberOfHistoriesInRun = 1000000
+i:So/Er165AveragedPhotons/NumberOfHistoriesInRun = 1000000
+
+
+i:Ts/seed = 501152494
+
+# ------------ GRAPHICS ------------ #
+# b:Ts/PauseBeforeQuit = "True"
+# s:Gr/MyGraphic1/Type = "OpenGL" # OpenGL, HepRep, VRML, DAWN, RayTracer, RayTracerX
+# u:Gr/MyGraphic1/Zoom = 2. # increase to zoom in, decrease to zoom out
+# d:Gr/MyGraphic1/Theta = 90. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# d:Gr/MyGraphic1/Phi = 0. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# u:Gr/MyGraphic1/TransX = 0. # move left or right in the view window
+# u:Gr/MyGraphic1/TransY = 0. # move up or down in the view window
+# s:Gr/MyGraphic1/Projection = "Perspective" # Defaults to "Orthogonal"
+# d:Gr/MyGraphic1/PerspectiveAngle = 10. deg # Increase for stronger perspective effect
+# i:Gr/MyGraphic1/WindowSizeX = 600
+# i:Gr/MyGraphic1/WindowSizeY = 600
+# i:Gr/MyGraphic1/WindowPosX = 0
+# i:Gr/MyGraphic1/WindowPosY = 0
+# # Remove hidden lines from wireframe geometries, like Geant4’s /vis/viewer/set/hiddenEdge
+# b:Gr/MyGraphic1/HiddenLineRemovalForGeometry = "False"
+# # Remove hidden trajectories lines from within geometries, like Geant4’s /vis/viewer/set/hiddenMarker
+# b:Gr/MyGraphic1/HiddenLineRemovalForTrajectories = "False"
+# s:Gr/MyGraphic1/ColorBy     = "Energy"
+# dv:Gr/MyGraphic1/ColorByEnergyRanges          = 6 0.1 1 10 100 1000 10000 eV
+# sv:Gr/MyGraphic1/ColorByEnergyColors          = 7 "red" "orange" "yellow" "green" "blue" "indigo" "violet"
+# s:Gr/RefreshEvery = "History"
