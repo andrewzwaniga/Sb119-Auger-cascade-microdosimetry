@@ -1,0 +1,201 @@
+# Andrew Zwaniga PhD Thesis Work
+
+# Title: G-value scoring via chemistry processes of Rh103m using generic-ion spectrum and g4em-dna_opt2 and 10000 histories and seed 501152498.
+# Purpose: Score the G-values of an isotropic Rh103m point source decaying in the centre of a simple cylindrical DNA model 
+
+# Description: Simulation of a very simple DNA model using a G4_WATER cylinder
+# and a basic Rh103m spectrum to calculate the G-values for radiolysis of water
+
+# Remark 1: Time window sizes for chemical stage simulation were selected according to Table 1 in Tian et al. (2017).
+# Remark 2: The time window sizes above also essentially agree with the selections made by Ramos-Mendez et al. (2018).
+# Tian Z, Jiang SB, Jia X. Phys Med Biol. 2017 Apr 21;62(8):3081-3096. doi: 10.1088/1361-6560/aa6246. Epub 2017 Mar 21. PMID: 28323637; PMCID: PMC5870909.
+# Ramos-Méndez J, Perl J, Schuemann J, McNamara A, Paganetti H, Faddegon B. Phys Med Biol. 2018; 63:105014.
+
+# Reference data for Auger electron spectrum: 
+# [1] Guatelli, S., Mantero, A., Mascialino, B., Nieminen, P. & Pia, M. G. Geant4 Atomic Relaxation. IEEE Transactions on Nuclear Science 54, 585–593 (2007).
+
+# [2] Guatelli, S., Mantero, A., Mascialino, B., Pia, M. G. & Zampichelli, V. Validation of Geant4 Atomic Relaxation Against the NIST Physical Reference Data. IEEE Transactions on Nuclear Science 54, 594–603 (2007).
+
+
+# ----------- GEOMETRY ----------- #
+
+## World
+d:Ge/World/HLX = 100. nm
+d:Ge/World/HLY = 100. nm
+d:Ge/World/HLZ = 100. nm
+b:Ge/World/Invisible = "False"
+s:Ge/World/Material = "G4_WATER"
+
+## Simple DNA water cylinder
+s:Ge/DNA/Parent = "World"
+s:Ge/DNA/Type = "TsCylinder"
+s:Ge/DNA/Material = "G4_WATER"
+d:Ge/DNA/HLX = 0 nm
+d:Ge/DNA/HLY = 0 nm
+d:Ge/DNA/HLZ = 0 nm
+d:Ge/DNA/RMax = 1 nm # May need adjustment
+d:Ge/DNA/HL = 1 nm # May need adjustment
+s:Ge/DNA/DrawingStyle = "solid"
+s:Ge/DNA/Color = "green"
+
+## Beamposition object is used to define the origin point of the source
+s:Ge/Beamposition/Parent = "World"
+s:Ge/Beamposition/Type = "Group"
+## The source is moved along an axis perpendicular to the symmetry axis of the cylinder
+d:Ge/Beamposition/TransY = 0. m
+d:Ge/Beamposition/TransZ = 0. m
+d:Ge/Beamposition/RotX = 0. deg
+d:Ge/Beamposition/RotY = 0. deg
+d:Ge/Beamposition/RotZ = 0. deg
+
+# ----------- SOURCE ----------- #
+
+s:So/Rh103m/BeamParticle = "GenericIon(45,103,0)"
+d:So/Rh103m/BeamEnergy = 0. eV
+s:So/Rh103m/Type = "Isotropic"
+s:So/Rh103m/Component = "Beamposition"
+
+
+# ----------- SCORING ----------- #
+
+s:Sc/GValue/Quantity = "TsSBSGValue"
+s:Sc/GValue/Component = "DNA"
+s:Sc/GValue/IfOutputFileAlreadyExists = "Overwrite"
+s:Sc/GValue/OutputType = "ASCII"
+s:Sc/GValue/OutputFile = "Rh103m-SBSGValue"
+b:Sc/GValue/OutputToConsole = "True"
+dv:Sc/GValue/TimeToRecord = 20 1.00000e0 2.06913e0 4.28133e0 8.85866e0 1.83298e1 3.79268e1 7.84759e1 1.62377e2 3.35981e2 6.95192e2 1.43844e3 2.97634e3 6.15847e3 1.27427e4 2.63664e4 5.45559e4 1.12883e5 2.33571e5 4.83292e5 9.99999e5 ps
+
+d:Sc/GValue/KillPrimaryIfEnergyLossExceeds = 30 keV
+d:Sc/GValue/AbortEventIfPrimaryEnergyLossExceeds = 1.01 * Sc/GValue/KillPrimaryIfEnergyLossExceeds keV
+d:Sc/GValue/KillPrimaryBasedOnTrackLength = 5 um
+
+# ----------- PHYSICS ----------- #
+
+sv:Ph/Default/Modules = 3 "g4em-dna_opt2" "g4radioactivedecay" "g4em-dna-chemistry"
+
+d:Ph/Default/EMRangeMin = 10 eV
+d:Ph/Default/SetProductionCutLowerEdge = 10 eV
+d:Ph/Default/MaxStepSize = 0.1 nm
+b:Ph/Default/Fluorescence = "True"
+b:Ph/Default/Auger = "True"
+b:Ph/Default/AugerCascade = "True"
+b:Ph/Default/DeexcitationIgnoreCut = "True"
+d:Ph/Default/DefaultRegionForTheWorld/CutForAllParticles = 0.01 nm
+
+# ----------- CHEMISTRY ----------- #
+
+# TOPAS Default Chemistry Settings
+# Copied from TOPAS-nBio2.0/examples/processes/TOPASChemistry.txt [1]
+# Alternatively, TOPASChemistry_Extended.txt can be used
+# Purpose: Use in radiolysis simulations
+
+# References:
+# 1. Schuemann, J. et al. Radiat Res 191, 125–138 (2019).
+
+# Diffusion coefficients
+sv:Ch/TOPASChemistry/DiffusionCoefficients/Molecules = 7 "SolvatedElectron" "Hydroxyl"  "Hydrogen"  "Hydronium" "DyHydrogen" "Hydroxide" "HydrogenPeroxide"
+dv:Ch/TOPASChemistry/DiffusionCoefficients/Values    = 7  4.90022052437e9 2.2e9 7e9 9.4601846875e9 4.8e9 5.3032890625e9 2.3e9 nm2/s
+
+b:Ch/TOPASChemistry/SetWaterMolecularConfiguration = "False"
+
+# Reaction rates
+sv:Ch/TOPASChemistry/Reaction/SolvatedElectron/SolvatedElectron/Products    = 3 "Hydroxide" "Hydroxide" "Dyhydrogen"
+d:Ch/TOPASChemistry/Reaction/SolvatedElectron/SolvatedElectron/ReactionRate = 0.647e10 /M/s
+b:Ch/TOPASChemistry/Reaction/SolvatedElectron/SolvatedElectron/CompatibleWithStepByStep = "True"
+
+sv:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydroxyl/Products            = 1 "Hydroxide"
+d:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydroxyl/ReactionRate         = 2.953e10 /M/s
+b:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydroxyl/CompatibleWithStepByStep = "True"
+
+sv:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydrogen/Products            = 2 "Hydroxide" "Dyhydrogen"
+d:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydrogen/ReactionRate         = 2.652e10 /M/s
+b:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydrogen/CompatibleWithStepByStep = "True"
+
+sv:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydronium/Products           = 1 "Hydrogen"
+d:Ch/TOPASChemistry/Reaction/SolvatedElectron/Hydronium/ReactionRate        = 2.109e10 /M/s
+
+sv:Ch/TOPASChemistry/Reaction/SolvatedElectron/HydrogenPeroxide/Products    = 2 "Hydroxide" "Hydroxyl"
+d:Ch/TOPASChemistry/Reaction/SolvatedElectron/HydrogenPeroxide/ReactionRate = 1.405e10 /M/s
+
+sv:Ch/TOPASChemistry/Reaction/Hydroxyl/Hydroxyl/Products                    = 1 "HydrogenPeroxide"
+d:Ch/TOPASChemistry/Reaction/Hydroxyl/Hydroxyl/ReactionRate                 = 0.475e10 /M/s
+
+sv:Ch/TOPASChemistry/Reaction/Hydroxyl/Hydrogen/Products                    = 1 "None"
+d:Ch/TOPASChemistry/Reaction/Hydroxyl/Hydrogen/ReactionRate                 = 1.438e10 /M/s
+
+sv:Ch/TOPASChemistry/Reaction/Hydrogen/Hydrogen/Products                    = 1 "Dyhydrogen"
+d:Ch/TOPASChemistry/Reaction/Hydrogen/Hydrogen/ReactionRate                 = 0.503e10 /M/s
+
+sv:Ch/TOPASChemistry/Reaction/Hydronium/Hydroxide/Products                  = 1 "None"
+d:Ch/TOPASChemistry/Reaction/Hydronium/Hydroxide/ReactionRate               = 11.031e10 /M/s
+
+s:Ch/ChemistryName = "TOPASChemistry"
+
+b:Ch/TOPASChemistry/ChemicalStageTransportActive = "True"
+d:Ch/TOPASChemistry/ChemicalStageTimeEnd = 1 us
+dv:Ch/TOPASChemistry/ChemicalStageTimeStepsHighEdges = 5 10.0 100.0 1000.0 10000.0 1000000.0 ps
+dv:Ch/TOPASChemistry/ChemicalStageTimeStepsResolutions = 5 0.1 1 3 10 100 ps
+
+# ----------- KEY ADJUSTABLES ----------- #
+
+# Number of threads to use (change to match number of cores requested)
+i:Ts/NumberOfThreads = 16
+b:Ts/ShowCPUTime = "True"
+
+# Exit if more than 0.1 percent of the total number of histories to be simulated are interrupted
+i:Ts/MaxInterruptedHistories = 10
+# Stop printing out a report of interrupted histories after this many reports
+i:Ts/InterruptedHistoryMaxReports = 10
+# Limit the number of reports made about killed tracks
+i:Ts/KilledTrackMaxReports = 10
+# Exit if more than 0.1 percent of the total number of histories to be simulated have killed tracks
+i:Ts/KilledTrackMaxCount = 10
+
+## Modeling parameters that may need adjustment
+i:Sc/SimpleSSBandDSB/BasePairDistanceForDefiningDSB = 10
+d:Sc/SimpleSSBandDSB/EnergyThresholdForHavingSSB = 0 eV
+
+## Radial position of source relative to DNA molecule axis of symmetry 
+d:Ge/Beamposition/TransX = 5. nm
+
+## Parameters that may need adjustment
+i:Sc/GValue/TimeBins = 20
+d:Sc/GValue/TimeBinMin = 1.0 ps
+d:Sc/GValue/TimeBinMax = 999999.0 ps
+b:Sc/GValue/TimeBinLog = "True"
+
+
+## Number of histories to simulate
+
+i:So/Rh103m/NumberOfHistoriesInRun = 10000
+
+
+## Don't print out every history to the console
+i:Ts/ShowHistoryCountAtInterval = 1000
+
+i:Ts/seed = 501152498
+
+i:Ts/ChemistryVerbosity = 1
+
+# ------------ GRAPHICS ------------ #
+# b:Ts/PauseBeforeQuit = "True"
+# s:Gr/MyGraphic1/Type = "OpenGL" # OpenGL, HepRep, VRML, DAWN, RayTracer, RayTracerX
+# u:Gr/MyGraphic1/Zoom = 2. # increase to zoom in, decrease to zoom out
+# d:Gr/MyGraphic1/Theta = 90. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# d:Gr/MyGraphic1/Phi = 0. deg # view angle as in /vis/viewer/set/viewpointThetaPhi
+# u:Gr/MyGraphic1/TransX = 0. # move left or right in the view window
+# u:Gr/MyGraphic1/TransY = 0. # move up or down in the view window
+# s:Gr/MyGraphic1/Projection = "Perspective" # Defaults to "Orthogonal"
+# d:Gr/MyGraphic1/PerspectiveAngle = 10. deg # Increase for stronger perspective effect
+# i:Gr/MyGraphic1/WindowSizeX = 600
+# i:Gr/MyGraphic1/WindowSizeY = 600
+# i:Gr/MyGraphic1/WindowPosX = 0
+# i:Gr/MyGraphic1/WindowPosY = 0
+# # Remove hidden lines from wireframe geometries, like Geant4’s /vis/viewer/set/hiddenEdge
+# b:Gr/MyGraphic1/HiddenLineRemovalForGeometry = "False"
+# # Remove hidden trajectories lines from within geometries, like Geant4’s /vis/viewer/set/hiddenMarker
+# b:Gr/MyGraphic1/HiddenLineRemovalForTrajectories = "False"
+# s:Gr/MyGraphic1/ColorBy = "ParticleType"
+# sv:Gr/MyGraphic1/ColorByParticleTypeNames = 9 "e-" "gamma" "Hydroxil" "SolvatedElectron" "HydrogenPeroxide" "Hydrogen" "DiHydrogen" "Oxygen" "Hydronium"
+# sv:Gr/MyGraphic1/ColorByParticleTypeColors = 9 "Red" "Green" "Teal" "Brown" "Aqua" "Blue" "Gray" "Orange" "Pink"
